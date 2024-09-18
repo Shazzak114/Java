@@ -1,0 +1,78 @@
+class BankAccount {
+    private double balance;
+
+    public BankAccount(double initialBalance) {
+        this.balance = initialBalance;
+    }
+
+    public void deposit(double amount) {
+        balance += amount;
+        System.out.println("Deposited: " + amount + ". New balance: " + balance);
+    }
+
+    public double getBalance() {
+        return balance;
+    }
+
+    public void withdraw(double amount) {
+        if (amount <= balance) {
+            balance -= amount;
+            System.out.println("Withdrew: " + amount + ". New balance: " + balance);
+        } else {
+            System.out.println("Insufficient funds!");
+        }
+    }
+}
+
+// Subclass for SavingsAccount
+class SavingsAccount extends BankAccount {
+    private final double withdrawalLimit = 500; 
+
+    public SavingsAccount(double initialBalance) {
+        super(initialBalance);
+    }
+
+    @Override
+    public void withdraw(double amount) {
+        if (amount <= withdrawalLimit) {
+            super.withdraw(amount);
+        } else {
+            System.out.println("Withdrawal limit exceeded for Savings Account!");
+        }
+    }
+}
+
+// Subclass for CheckingAccount
+class CheckingAccount extends BankAccount {
+    private final double withdrawalLimit = 1000; 
+    private final double withdrawalFee = 2.0; 
+
+    public CheckingAccount(double initialBalance) {
+        super(initialBalance);
+    }
+
+    @Override
+    public void withdraw(double amount) {
+        if (amount <= withdrawalLimit) {
+            super.withdraw(amount + withdrawalFee); 
+            System.out.println("Withdrawal fee: " + withdrawalFee);
+        } else {
+            System.out.println("Withdrawal limit exceeded for Checking Account!");
+        }
+    }
+}
+
+// Main class to test the accounts
+public class BankAccountTest {
+    public static void main(String[] args) {
+        SavingsAccount savings = new SavingsAccount(1000);
+        savings.deposit(200);
+        savings.withdraw(300);
+        savings.withdraw(600);
+
+        CheckingAccount checking = new CheckingAccount(1500);
+        checking.deposit(100);
+        checking.withdraw(900);
+        checking.withdraw(1100);
+    }
+}
